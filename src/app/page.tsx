@@ -1,6 +1,13 @@
+
 "use client";
 
 import { useState } from "react";
+import {
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  Show,
+} from "@clerk/nextjs";
 
 export default function Home() {
   const [pickup, setPickup] = useState("");
@@ -9,20 +16,41 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#070816] text-white">
       <nav className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-16">
-        <h1 className="text-2xl font-black tracking-wider">
+        <a href="#home" className="text-2xl font-black tracking-wider">
           VOLT<span className="text-cyan-400">CAB</span>
-        </h1>
+        </a>
+
         <div className="hidden gap-8 text-sm text-gray-300 md:flex">
           <a href="#home" className="hover:text-cyan-400">Home</a>
           <a href="#book" className="hover:text-cyan-400">Book a Ride</a>
           <a href="#features" className="hover:text-cyan-400">Features</a>
         </div>
-        <button className="rounded-full border border-cyan-400/60 px-5 py-2 text-sm text-cyan-300 hover:bg-cyan-400/10">
-          Sign In
-        </button>
+
+        <div className="flex items-center gap-3">
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button className="rounded-full border border-cyan-400/60 px-5 py-2 text-sm text-cyan-300 hover:bg-cyan-400/10">
+                Sign In
+              </button>
+            </SignInButton>
+
+            <SignUpButton mode="modal">
+              <button className="rounded-full bg-cyan-400 px-5 py-2 text-sm font-bold text-[#070816] hover:bg-cyan-300">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </Show>
+
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+        </div>
       </nav>
 
-      <section id="home" className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:px-16 md:py-28">
+      <section
+        id="home"
+        className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:px-16 md:py-28"
+      >
         <div className="absolute left-1/4 top-24 -z-0 h-64 w-64 rounded-full bg-purple-600/20 blur-[120px]" />
 
         <div className="relative z-10">
@@ -30,7 +58,7 @@ export default function Home() {
             THE FUTURE OF URBAN MOBILITY
           </p>
 
-          <h2 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
+          <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
             YOUR CITY.
             <br />
             YOUR RIDE.
@@ -38,14 +66,17 @@ export default function Home() {
             <span className="bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 bg-clip-text text-transparent">
               YOUR VOLT.
             </span>
-          </h2>
+          </h1>
 
           <p className="mt-6 max-w-lg leading-7 text-gray-400">
             Your next journey starts here. Find a ride, choose your destination,
             and get ready to move through the city in a whole new way.
           </p>
 
-          <a href="#book" className="mt-8 inline-flex rounded-full bg-cyan-400 px-7 py-3.5 font-bold text-[#070816] transition hover:scale-105 hover:bg-cyan-300">
+          <a
+            href="#book"
+            className="mt-8 inline-flex rounded-full bg-cyan-400 px-7 py-3.5 font-bold text-[#070816] transition hover:scale-105 hover:bg-cyan-300"
+          >
             Book Your Ride ↗
           </a>
 
@@ -59,7 +90,7 @@ export default function Home() {
               <p className="mt-1 text-xs text-gray-500">Ride updates*</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">ONE</p>
+              <p className="text-2xl font-bold">ONE</p>
               <p className="mt-1 text-xs text-gray-500">Simple platform</p>
             </div>
           </div>
@@ -71,17 +102,29 @@ export default function Home() {
           <div className="relative rounded-3xl border border-white/10 bg-[#101225]/95 p-7 shadow-2xl md:p-9">
             <div className="mb-7 flex items-center justify-between">
               <div>
-                <p className="text-xs tracking-[0.2em] text-cyan-300">VOLT BOOKING</p>
-                <h3 className="mt-2 text-2xl font-bold">Where to next?</h3>
+                <p className="text-xs tracking-[0.2em] text-cyan-300">
+                  VOLT BOOKING
+                </p>
+                <h2 className="mt-2 text-2xl font-bold">Where to next?</h2>
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-2xl">
                 ↗
               </div>
             </div>
 
-            <form onSubmit={(event) => { event.preventDefault(); alert(`Ride request preview\nPickup: ${pickup}\nDestination: ${destination}\n\nBooking and driver matching will be connected later.`); }} className="space-y-5">
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                alert(
+                  `Ride request preview\nPickup: ${pickup}\nDestination: ${destination}\n\nReal booking and driver matching will be connected later.`
+                );
+              }}
+              className="space-y-5"
+            >
               <div>
-                <label className="mb-2 block text-sm text-gray-400">Pickup location</label>
+                <label className="mb-2 block text-sm text-gray-400">
+                  Pickup location
+                </label>
                 <input
                   value={pickup}
                   onChange={(event) => setPickup(event.target.value)}
@@ -92,7 +135,9 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">Your destination</label>
+                <label className="mb-2 block text-sm text-gray-400">
+                  Your destination
+                </label>
                 <input
                   value={destination}
                   onChange={(event) => setDestination(event.target.value)}
@@ -102,7 +147,10 @@ export default function Home() {
                 />
               </div>
 
-              <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 py-4 font-bold text-[#070816] transition hover:brightness-110">
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 py-4 font-bold text-[#070816] transition hover:brightness-110"
+              >
                 Find My Ride →
               </button>
             </form>
@@ -114,12 +162,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="features" className="border-t border-white/10 px-6 py-12 text-center md:px-16">
-        <p className="text-sm tracking-[0.25em] text-purple-300">MOVE DIFFERENTLY</p>
-        <h3 className="mt-3 text-2xl font-bold">Built for your next journey.</h3>
+      <section
+        id="features"
+        className="border-t border-white/10 px-6 py-12 text-center md:px-16"
+      >
+        <p className="text-sm tracking-[0.25em] text-purple-300">
+          MOVE DIFFERENTLY
+        </p>
+        <h2 className="mt-3 text-2xl font-bold">
+          Built for your next journey.
+        </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-gray-400">
           A futuristic interface today. Maps, authentication, driver matching,
-          live updates, and payments will be developed in the upcoming project stages.
+          live updates, and payments will be developed in the upcoming project
+          stages.
         </p>
       </section>
 
