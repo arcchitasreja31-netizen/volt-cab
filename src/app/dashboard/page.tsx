@@ -1,12 +1,11 @@
 "use client";
-
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-
 export default function DashboardPage() {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
+  console.log("CLERK STATUS:", { isLoaded, isSignedIn });
+  console.log("VOLT CAB CLERK USER:", user);
 type Ride = {
   id: string;
   pickup_location: string;
@@ -19,6 +18,20 @@ type Ride = {
 const [rides, setRides] = useState<Ride[]>([]);
 const [ridesLoading, setRidesLoading] = useState(true);
 const [ridesError, setRidesError] = useState("");
+
+type Profile = {
+  full_name: string | null;
+  phone: string | null;
+};
+
+const [profile, setProfile] = useState<Profile>({
+  full_name: "",
+  phone: "",
+});
+const [profileLoading, setProfileLoading] = useState(true);
+const [profileSaving, setProfileSaving] = useState(false);
+const [profileMessage, setProfileMessage] = useState("");
+
 
 useEffect(() => {
   let cancelled = false;
@@ -58,6 +71,51 @@ useEffect(() => {
     cancelled = true;
   };
 }, [isLoaded, user]);
+
+useEffect(() => {
+  let cancelled = false;
+
+  async function loadProfile() {
+    try {
+      const response = await fetch("/api/profile");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error ?? "Could not load your profile.");
+      }
+
+      if (!cancelled) {
+        setProfile({
+          full_name: result.profile?.full_name ?? "",
+          phone: result.profile?.phone ?? "",
+        });
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setProfileMessage(
+          error instanceof Error
+            ? error.message
+            : "Could not load your profile."
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setProfileLoading(false);
+      }
+    }
+  }
+
+  if (isLoaded && user) {
+    void loadProfile();
+  } else if (isLoaded) {
+    setProfileLoading(false);
+  }
+
+  return () => {
+    cancelled = true;
+  };
+}, [isLoaded, user]);
+
   if (!isLoaded) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#070b14] text-cyan-300">
@@ -76,7 +134,7 @@ useEffect(() => {
 
           <div className="flex items-center gap-3">
             <span className="text-sm text-slate-400">
-              {user?.firstName ?? "Passenger"}
+            {user?.fullName || user?.firstName || user?.username || "Passenger"}
             </span>
             <div className="flex h-10 w-10 items-center justify-center rounded-full border border-cyan-400/50 bg-cyan-400/10 font-bold text-cyan-300">
               {(user?.firstName?.[0] ?? "V").toUpperCase()}
