@@ -14,16 +14,22 @@ export default function Home() {
   const [destination, setDestination] = useState("");
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#070816] text-white">
+   <main
+  className="min-h-screen overflow-hidden bg-[#170910] bg-cover bg-center bg-fixed text-white"
+  style={{
+    backgroundImage:
+      "linear-gradient(rgba(15, 3, 8, 0.45), rgba(15, 3, 8, 0.78)), url('/images/voltcity.png')",
+  }}
+>
       <nav className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-16">
         <a href="#home" className="text-2xl font-black tracking-wider">
-          VOLT<span className="text-cyan-400">CAB</span>
+          VOLT<span className="text-rose-400">CAB</span>
         </a>
 
         <div className="hidden gap-8 text-sm text-gray-300 md:flex">
-          <a href="#home" className="hover:text-cyan-400">Home</a>
-          <a href="#book" className="hover:text-cyan-400">Book a Ride</a>
-          <a href="#features" className="hover:text-cyan-400">Features</a>
+          <a href="#home" className="hover:text-rose-400">Home</a>
+          <a href="#book" className="hover:text-rose-400">Book a Ride</a>
+          <a href="#features" className="hover:text-rose-400">Features</a>
         </div>
 
         <div className="flex items-center gap-3">

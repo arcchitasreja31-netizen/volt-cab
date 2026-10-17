@@ -12,11 +12,12 @@ export async function GET() {
     );
   }
 
-  const { data: existingProfile, error: fetchError } = await supabaseServer
-    .from("users")
-    .select("id, full_name, phone, profile_image_url, created_at")
-    .eq("id", userId)
-    .maybeSingle();
+  const { data: existingProfile, error: fetchError } =
+    await supabaseServer
+      .from("users")
+      .select("id, full_name, phone, profile_image_url, created_at")
+      .eq("id", userId)
+      .maybeSingle();
 
   if (fetchError) {
     console.error("Profile fetch failed:", fetchError.code);
@@ -35,25 +36,31 @@ export async function GET() {
 
   const clerkUser = await currentUser();
 
-  const fullName = [
-    clerkUser?.firstName,
-    clerkUser?.lastName,
-  ]
-    .filter(Boolean)
-    .join(" ") || null;
+  if (!clerkUser) {
+    return NextResponse.json(
+      { error: "Could not load your account details." },
+      { status: 401 }
+    );
+  }
 
-  const { data: newProfile, error: createError } = await supabaseServer
-    .from("users")
-    .upsert(
-      {
-        id: userId,
-        full_name: fullName,
-        profile_image_url: clerkUser?.imageUrl ?? null,
-      },
-      { onConflict: "id" }
-    )
-    .select("id, full_name, phone, profile_image_url, created_at")
-    .single();
+  const fullName =
+    [clerkUser.firstName, clerkUser.lastName]
+      .filter(Boolean)
+      .join(" ") || "Volt Cab User";
+
+  const { data: newProfile, error: createError } =
+    await supabaseServer
+      .from("users")
+      .upsert(
+        {
+          id: userId,
+          full_name: fullName,
+          profile_image_url: clerkUser.imageUrl || null,
+        },
+        { onConflict: "id" }
+      )
+      .select("id, full_name, phone, profile_image_url, created_at")
+      .single();
 
   if (createError) {
     console.error("Profile creation failed:", createError.code);
