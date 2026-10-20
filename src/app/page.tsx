@@ -117,36 +117,21 @@ export default function Home() {
                 ↗
               </div>
             </div>
-
             <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                alert(
-                  `Ride request preview\nPickup: ${pickup}\nDestination: ${destination}\n\nReal booking and driver matching will be connected later.`
-                );
-              }}
-              className="space-y-5"
-            >
-              <div>
-                <label className="mb-2 block text-sm text-gray-400">
-                  Pickup location
-                </label>
-                <input
-                  value={pickup}
-                  onChange={(event) => setPickup(event.target.value)}
-                  placeholder="Enter your pickup point"
-                  required
-                  className="w-full rounded-xl border border-white/10 bg-[#080b19] px-4 py-4 text-white outline-none transition placeholder:text-gray-600 focus:border-cyan-400"
-                />
-              </div>
+  onSubmit={(event) => {
+    event.preventDefault();
+    window.location.href = "/book";
+  }}
+  className="space-y-5"
+>
+  <div>
+    <label className="mb-2 block text-sm text-gray-400">
+      Pickup location
+    </label>
 
-              <div>
-                <label className="mb-2 block text-sm text-gray-400">
-                  Your destination
-                </label>
-                <input
-                  value={destination}
-                  onChange={(event) => setDestination(event.target.value)}
+    <input
+      value={pickup}
+      onChange={(event) => setPickup(event.target.value)}
                   placeholder="Where are you going?"
                   required
                   className="w-full rounded-xl border border-white/10 bg-[#080b19] px-4 py-4 text-white outline-none transition placeholder:text-gray-600 focus:border-purple-400"
