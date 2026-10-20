@@ -13,36 +13,24 @@ export default function SignInPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="mb-8 text-center">
-          <a
-            href="/"
-            className="text-4xl font-black tracking-wider text-white"
-          >
+          <a href="/" className="text-4xl font-black tracking-wider text-white">
             VOLT<span className="text-rose-400">CAB</span>
           </a>
-
-          <p className="mt-3 text-rose-100">
-            Your journey starts here.
-          </p>
+          <p className="mt-3 text-rose-100">Your journey starts here.</p>
         </div>
 
         <div className="overflow-hidden rounded-3xl border border-rose-400/30 bg-[#240d17]/95 p-2 shadow-2xl shadow-rose-950/60 backdrop-blur-md">
-         <SignIn
-  routing="path"
-  path="/sign-in"
-  signUpUrl="/sign-up"
-  forceRedirectUrl="/"
-  appearance={{
-    variables: {
-      colorPrimary: "#be123c",
-      colorBackground: "#240d17",
-      colorText: "#ffffff",
-      colorTextSecondary: "#ffffff",
-      colorInputBackground: "#fff7f9",
-      colorInputText: "#2b0a18",
-      colorNeutral: "#ffffff",
-    },
-  }}
-/>
+          <SignIn
+            routing="path"
+            path="/sign-in"
+            signUpUrl="/sign-up"
+            forceRedirectUrl="/dashboard"
+            
+appearance={{
+  variables: {
+    colorPrimary: "#be123c",
+    colorBackground: "#240d17",
+  },
   elements: {
     card: {
       backgroundColor: "transparent",
@@ -76,6 +64,7 @@ export default function SignInPage() {
     footer: { color: "#ffffff" },
   },
 }}
+
           />
         </div>
 
