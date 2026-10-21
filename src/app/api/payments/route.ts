@@ -148,7 +148,7 @@ export async function POST(request: Request) {
       ) {
         await supabaseServer
           .from("payments")
-          .update({ status: "paid" })
+          .update({ status: "succeeded" })
           .eq("id", payment.id)
           .eq("user_id", userId);
 

@@ -65,7 +65,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabaseServer
     .from("payments")
-    .update({ status: "paid" })
+    .update({ status: "succeeded" })
     .eq("id", paymentId)
     .eq("stripe_session_id", session.id)
     .select("id")
