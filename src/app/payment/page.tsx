@@ -46,8 +46,14 @@ function PaymentContent() {
         throw new Error(data.error || "Unable to create payment.");
       }
 
-      setPayment(data.payment);
-      setMessage("Payment record created. No money has been charged.");
+      if (typeof data.checkoutUrl !== "string" || !data.checkoutUrl) {
+  throw new Error("Stripe Checkout URL was not returned.");
+}
+
+setPayment(data.payment);
+setMessage("Redirecting to Stripe Checkout...");
+
+window.location.assign(data.checkoutUrl);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Something went wrong."
